@@ -3,28 +3,14 @@
 /* eslint-disable no-param-reassign */
 // eslint-disable-next-line no-param-reassign
 const express = require('express');
+const bookControllers = require('../controllers/bookControllers');
 
 function routes(Book) {
   const bookRouter = express.Router();
-  bookRouter
-    .route('/book')
-    .get((req, res) => {
-      const query = {};
-      if (req.query.genre) {
-        query.genre = req.query.genre;
-      }
-      Book.find(query, (err, books) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.json(books);
-      });
-    })
-    .post((req, res) => {
-      const book = new Book(req.body);
-      book.save();
-      res.json(book);
-    });
+  const controller = bookControllers(Book);
+  bookRouter.route('/book')
+    .get(controller.get)
+    .post(controller.post);
   bookRouter.use('/book/:id', (req, res, next) => {
     Book.findById(req.params.id, (err, book) => {
       if (err) {
@@ -61,7 +47,15 @@ function routes(Book) {
       }
       return res.json(req.book);
     });
-  });
+  })
+    .delete((req, res) => {
+      req.book.remove( (err) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.sendStatus(500);
+      });
+    });
   return bookRouter;
 }
 

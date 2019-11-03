@@ -16,4 +16,8 @@ module.exports = {
   },
   rules: {
   },
+  env: {
+    "node": true,
+    "mocha": true,
+  }
 };
