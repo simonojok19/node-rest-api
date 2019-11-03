@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/simonojok19/node-rest-api#readme",
   "dependencies": {
+    "eslint": "^6.6.0",
     "express": "^4.17.1"
   }
 }
